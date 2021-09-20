@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
 # from send_mail import send_mail
 
@@ -33,7 +33,18 @@ class Feedback(db.Model):
         self.rating = rating
         self.comments = comments
 
+class Notas(db.Model):
+    __tablename__ = 'notas'
+    id = db.Column(db.Integer, primary_key=True)
+    titulo = db.Column(db.String(200), unique=True)
+    nota = db.Column(db.Text())
+    url = db.Column(db.String(300))
 
+    def __init__(self, titulo, nota, url):
+        self.titulo = titulo
+        self.nota = nota
+        self.url = url
+ 
 @app.route('/')
 def index():
     return render_template('index.html')
@@ -56,6 +67,31 @@ def submit():
             # send_mail(customer, dealer, rating, comments)
             return render_template('success.html')
         return render_template('index.html', message='You have already submitted feedback')
+
+@app.route('/form')
+def llenarFormulario():
+    return render_template('form.html')
+
+@app.route('/submitnota', methods=['POST'])
+def submitnota():
+    if request.method == 'POST':
+        titulo = request.form['titulo']
+        nota = request.form['nota']
+        url = request.form['url']
+        if db.session.query(Notas).filter(Notas.titulo == titulo).count() == 0:
+            data = Notas(titulo, nota, url)
+            db.session.add(data)
+            db.session.commit()
+        else:
+            return ('titulo ya existe')
+        return redirect(url_for('notaslist'))
+
+@app.route('/notas')
+def notaslist():
+    query = db.session.query(Notas).all()
+    for item in query:
+        print(query)
+    return render_template('notaslist.html', notas=query)
 
 
 if __name__ == '__main__':
