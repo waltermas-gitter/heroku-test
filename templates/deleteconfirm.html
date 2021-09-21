@@ -13,20 +13,26 @@
   <body>
     <h1 class="p-2 bg-primary text-white text-center rounded border">Anotador basico!</h1>
 <div class="container">
-<a href="/form" class="btn btn-info">Nueva</a>
-	{% for nota in notas %}
-<div class="card my-2">
-  <div class="card-body">
-	  <h4 class="card-title">{{ nota.titulo }} </h4>
-	  <p class="card-text">{{ nota.nota }} </p>
-	  <a href="{{ nota.url }} " class="card-link">link</a>
-	  <a href="edit?idNota={{nota.id}} " class="card-link">edit</a>
-	  <a href="delete?idNota={{nota.id}} " class="card-link">delete</a>
-    <!-- <a href="#" class="card-link">Another link</a> -->
-  </div>
+<form class="row g-3 m-3" action="/deleteconfirm" method="POST">
+<div class="col-2">
+	<input type="hidden" name="titulo" value="{{nota.titulo}}"/>
+    <label for="titulo" class="form-label p-2 bg-primary text-white rounded">Titulo</label>
+    <input class="form-control" id="titulo" type="text" placeholder="{{nota.titulo}}" disabled>
 </div>
-    {% endfor %}
+<div class="col-12 my-2">
+  <label for="nota" class="form-label p-2 bg-primary text-white rounded">Nota</label>
+  <textarea class="form-control" id="nota" name="nota" rows="3" disabled>{{nota.nota}}</textarea>
 </div>
+<div class="col-12">
+    <label for="url" class="form-label p-2 bg-primary text-white rounded">Url</label>
+    <input type="text" class="form-control" id="url" name="url" value="{{nota.url}}" disabled>
+</div>
+<div class="col-12 my-2">
+<button type="submit" class="btn btn-danger mb-3">Delete</button>
+</div>
+</form>
+</div>
+
 
 <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->

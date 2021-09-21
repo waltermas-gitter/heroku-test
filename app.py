@@ -94,5 +94,36 @@ def notaslist():
     return render_template('notaslist.html', notas=query)
 
 
+@app.route('/edit')
+def edit():
+    idNota = request.args.get("idNota")
+    query = db.session.query(Notas).filter(Notas.id == idNota).first()
+    return render_template('editarnota.html', nota=query)
+
+
+@app.route('/submitnotaeditada', methods=['POST'])
+def submitnotaeditada():
+    if request.method == 'POST':
+        titulo = request.form['titulo']
+        nota = request.form['nota']
+        url = request.form['url']
+        query = db.session.query(Notas).filter(Notas.titulo == titulo).first()
+        query.nota = nota
+        query.url = url
+        db.session.commit()
+    return redirect(url_for('notaslist'))
+        
+@app.route('/delete')
+def delete():
+    idNota = request.args.get("idNota")
+    query = db.session.query(Notas).filter(Notas.id == idNota).first()
+    return render_template('deleteconfirm.html', nota=query)
+
+@app.route('/deleteconfirm', methods=['POST'])
+def deleteconfirm():
+    titulo = request.form['titulo']
+    query = db.session.query(Notas).filter(Notas.titulo == titulo).delete()
+    db.session.commit()
+    return redirect(url_for('notaslist'))
 if __name__ == '__main__':
     app.run()
