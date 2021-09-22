@@ -4,7 +4,7 @@
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
+<link rel="shortcut icon" href="{{ url_for('static', filename='noteicon.png') }}">
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
@@ -12,20 +12,21 @@
   </head>
   <body>
     <h1 class="p-2 bg-primary text-white text-center rounded border">Anotador basico!</h1>
-<div class="container">
-<a href="/form" class="btn btn-info">Nueva</a>
+<a href="/form" class="btn btn-info m-2">Nueva</a>
+<div class="row">
 	{% for nota in notas %}
-<div class="card my-2">
-  <div class="card-body">
-	  <h4 class="card-title">{{ nota.titulo }} </h4>
-	  <p class="card-text">{{ nota.nota }} </p>
-	  <a href="{{ nota.url }} " class="card-link">link</a>
-	  <a href="edit?idNota={{nota.id}} " class="card-link">edit</a>
-	  <a href="delete?idNota={{nota.id}} " class="card-link">delete</a>
-    <!-- <a href="#" class="card-link">Another link</a> -->
-  </div>
-</div>
-    {% endfor %}
+	<div class="col-md-3 m-2">
+		<div class="card border-primary">
+		  <div class="card-body">
+		  <h4 class="card-title">{{ nota.titulo }} </h4>
+		  <p style="white-space: pre-wrap;" class="card-text">{{nota.nota}}</p>
+		  <a href="{{ nota.url }} " class="btn btn-primary">link</a>
+		  <a href="edit?idNota={{nota.id}} " class="btn btn-primary">edit</a>
+		  <a href="delete?idNota={{nota.id}} " class="btn btn-primary">delete</a>
+		  </div>
+		</div>
+	</div>
+        {% endfor %}
 </div>
 
 <!-- Optional JavaScript -->
